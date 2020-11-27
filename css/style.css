@@ -1,0 +1,39 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%; /* new kadar ortalamak istersen, 100 ekranın tam ortası */
+}
+
+.wrapper div {
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    border: thin solid black;
+}
+
+.row:not(:nth-child(1)) {
+    border-top: none;
+}
+
+.column {
+    flex: 0 1 auto;
+    width: 20px;
+    height: 20px;
+    border-left: thin solid black;
+}
+
+.column:nth-child(1) {
+    border-left: none;
+}
