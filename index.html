@@ -33,7 +33,7 @@
     </div>
     <div id="algorithm_panel" class="panel right_panel">
         <header>
-            <h2 class="header_title">Select Algorithm</h2>
+            <h2 class="header_title">Settings</h2>
         </header>
 
         <div class="accordion">
@@ -206,18 +206,31 @@
                     <label class="option_label">Visualize recursion</label> <br>
                 </div>
             </div>
-
         </div><!-- .accordion -->
+        <br>
+        <hr>
+        <label for="frequency">Obstacles Frequency</label>
+        <select name="frequency" id="frequency">
+            <option value=10 selected="selected">10%</option>
+            <option value=20>%20</option>
+            <option value=30>%30</option>
+            <option value=40>%40</option>
+            <option value=50>%50</option>
+        </select>
+
     </div><!-- #algorithm_panel -->
     <div class="wrapper" id="outer">
     </div>
 </body>
 
 <script>
+    var obstaclesPositions = []
+    var maxSize = 0
+
     $(document).ready(() => {
         $('.panel').draggable();
         $('.accordion').accordion({
-            collapsible: false,
+            collapsible: true,
         });
 
         $('#hide_instructions').click(function () {
@@ -226,6 +239,7 @@
         const rows = 32
         const cols = 64
         const outer = $('#outer')
+        maxSize = rows * cols
         let size = 0;
 
         for (let i = 0; i < rows; i++) {
@@ -236,31 +250,69 @@
             outer.append(row)
         }
 
-        const hunter = $('#990')
+        const hunter = $('#' + getRndInteger(0, maxSize))
         hunter.addClass('hunter')
-        const hunt = $('#998')
+        const hunt = $('#' + getRndInteger(0, maxSize))
         hunt.addClass('hunt')
+        //console.log(typeof parseInt($('#frequency :selected').val()))
+
+        putObstacles()
+
+        $("#frequency").change(function () {
+            putObstacles()
+        });
 
     })
 
     function handleClick(event) {
         //if (event.buttons == 1) {
         const target = $(event.currentTarget)
-        if (target.hasClass('hunt')) {
-            target.removeClass('hunt')
-            $('#'+getRndInteger(0,2047)).addClass('hunt')
-        } else if (target.hasClass('hunter')) {
-            target.removeClass('hunter')
-            $('#'+getRndInteger(0,2047)).addClass('hunter')
+
+        if (target.hasClass('obstacle')) {
+            target.removeClass('obstacle')
+        } else if (target.hasClass('hunt') || target.hasClass('hunter')) {
+            let rnd = getRndInteger(0, maxSize)
+            while (isEmpty(rnd) != 1) {
+                rnd = getRndInteger(0, maxSize)
+            }
+            if (target.hasClass('hunt')) {
+                target.removeClass('hunt')
+                $('#' + rnd).addClass('hunt')
+            } else if (target.hasClass('hunter')) {
+                target.removeClass('hunter')
+                $('#' + rnd).addClass('hunter')
+            }
         } else {
-            if (target.hasClass("obstacle")) {
-                target.removeClass("obstacle")
-            } else {
-                target.addClass("obstacle")
+            target.addClass('obstacle')
+        }
+        //console.log(target.attr('id'))
+        //}
+    }
+
+    function isEmpty(pos) {
+        if (!$('#' + pos).hasClass('obstacle') && !$('#' + pos).hasClass('hunt') && !$('#' + pos).hasClass('hunter')) {
+            return 1
+        } else {
+            return 0
+        }
+    }
+
+    function putObstacles() {
+        if (obstaclesPositions.length != 0) {
+            for (let i = 0; i < obstaclesPositions.length; i++) {
+                $('#' + obstaclesPositions[i]).removeClass('obstacle')
             }
         }
-        console.log(target.attr('id'))
-        //}
+        let freq = parseInt(maxSize * parseFloat($('#frequency :selected').val() / 100))
+        while (freq != 0) {
+            let rnd = getRndInteger(0, maxSize)
+            if (isEmpty(rnd) == 1) {
+                $('#' + rnd).addClass('obstacle')
+                obstaclesPositions.push(rnd)
+                //console.log(obstaclesPositions)
+                freq -= 1
+            }
+        }
     }
 
     function getRndInteger(min, max) {
