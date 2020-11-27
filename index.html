@@ -217,7 +217,19 @@
             <option value=40>%40</option>
             <option value=50>%50</option>
         </select>
+        <!--<br>
+        <hr>
+        <form id="rowcolForm">
 
+            <label for="rowInput">Row</label>
+            <input type="number" id="rowInput" name="rowInput" min="1" max="32">
+            <br>
+            <label for="colInput">Col</label>
+            <input type="number" id="colInput" name="colInput" min="2" max="64">
+
+            <input type="submit">
+
+        </form>-->
     </div><!-- #algorithm_panel -->
     <div class="wrapper" id="outer">
     </div>
@@ -261,6 +273,11 @@
         $("#frequency").change(function () {
             putObstacles()
         });
+
+        /*$('#rowcolForm').click(function (event) {
+            event.preventDefault();
+            console.log("sa")
+        });*/
 
     })
 
