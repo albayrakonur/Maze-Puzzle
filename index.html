@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +11,36 @@
 
 <body>
     <div class="wrapper" id="outer">
-        
-    </div>    
+
+    </div>
 </body>
 
 <script>
+    $(document).ready(() => {
+        const rows = 32
+        const cols = 64
+        const outer = $('#outer')
 
-$(document).ready(function() {
-    let rowSize = 32;
-    let colSize = 64;
-    let outerDiv = document.getElementById("outer");
+        for (let i = 0; i < rows; i++) {
+            const row = $('<div>', { class: 'row' })
 
-    for(let i = 0; i < rowSize; i++) {
-        let tempRow = "<div class='row'>";
-        for(let j = 0; j < colSize; j++) {
-            tempRow += "<div class='column'></div>";
+            for (let j = 0; j < cols; j++) {
+                row.append($('<div>', { class: 'column', id: (i * rows) + j }).click(handleClick))
+            }
+
+            outer.append(row)
         }
-        tempRow += "</div>"
-        outerDiv.innerHTML += tempRow;
-    }
-    
-});
+    })
 
+    function handleClick(event) {
+        const target = $(event.currentTarget)
+        if(target.hasClass("wall")) {
+            target.removeClass("wall")
+        }else {
+            target.addClass("wall")
+        }
+        console.log(target.attr('id'))
+    }
 </script>
+
 </html>
