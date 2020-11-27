@@ -92,3 +92,19 @@ html, body {
     color: #fff;
     text-decoration: underline;
 }
+
+.white {
+    color: #fff;
+}
+
+.green {
+    color: #0d0;
+}
+
+.red {
+    color: #ff9166;
+}
+
+.spinner {
+    width: 2em;
+}
