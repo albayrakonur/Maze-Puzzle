@@ -30,8 +30,8 @@ html, body {
 
 .column {
     flex: 0 1 auto;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border-left: thin solid black;
 }
 
@@ -174,4 +174,16 @@ footer {
 
 .spinner {
     width: 2em;
+}
+
+.obstacle {
+    background: black;
+}
+
+.hunter {
+    background: #00dd00;
+}
+
+.hunt {
+    background: #ee4400;
 }
