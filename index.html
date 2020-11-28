@@ -26,8 +26,8 @@
             <span id="hide_instructions">hide</span>
         </header>
         Click within the <span class="white">white</span> grid and drag your mouse to draw obstacles. <br>
-        Click the <span class="green">green</span> node to set the start position random. <br>
-        Click the <span class="red">red</span> node to set the end position random. <br>
+        Click the <span class="green">green</span> node to set the start position randomly. <br>
+        Click the <span class="red">red</span> node to set the end position randomly. <br>
         Choose an algorithm from the right-hand panel. <br>
         Click Start Search in the lower-right corner to start the animation.
     </div>
@@ -209,7 +209,7 @@
         </div><!-- .accordion -->
         <br>
         <hr>
-        <label for="frequency">Obstacles Frequency</label>
+        <label for="frequency">Frequency of Obstacles</label>
         <select name="frequency" id="frequency">
             <option value=10 selected="selected">10%</option>
             <option value=20>%20</option>
@@ -231,6 +231,13 @@
 
         </form>-->
     </div><!-- #algorithm_panel -->
+
+    <div id="play_panel" class="panel right_panel ui-draggable" style="top: 589px;">
+        <button id="startButton" class="control_button">Start Search</button>
+        <button id="pauseButton" class="control_button" disabled="disabled">Pause Search</button>
+        <button id="clearButton" class="control_button">Clear Walls</button>
+    </div>
+
     <div class="wrapper" id="outer">
     </div>
 </body>
@@ -240,6 +247,8 @@
     var maxSize = 0
 
     $(document).ready(() => {
+        var $algo = $('#algorithm_panel');
+
         $('.panel').draggable();
         $('.accordion').accordion({
             collapsible: true,
@@ -248,6 +257,11 @@
         $('#hide_instructions').click(function () {
             $('#instructions_panel').slideUp();
         });
+
+        $('#play_panel').css({
+            top: $algo.offset().top + $algo.outerHeight() + 20
+        });
+
         const rows = 32
         const cols = 64
         const outer = $('#outer')
@@ -272,6 +286,35 @@
 
         $("#frequency").change(function () {
             putObstacles()
+        });
+
+        $('#clearButton').click(function (event) {
+            clearObstacles()
+        });
+
+        $('#startButton').click(function (event) {
+            let data = new FormData();
+            for (let i = 0; i < maxSize; i++) {
+                let tmp = $('#' + i)
+                if (tmp.hasClass('obstacle')) {
+                    data.append(i, true)
+                } else {
+                    data.append(i, false)
+                }
+            }
+            var reqObj = {};
+            data.forEach((value, key) => reqObj[key] = value);
+            var json = JSON.stringify(reqObj);
+            //for (let pair of data.entries()) {
+            //    console.log(reqObj);
+            //}
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: reqObj,
+                success: success,
+                dataType: dataType
+            });
         });
 
         /*$('#rowcolForm').click(function (event) {
@@ -315,11 +358,7 @@
     }
 
     function putObstacles() {
-        if (obstaclesPositions.length != 0) {
-            for (let i = 0; i < obstaclesPositions.length; i++) {
-                $('#' + obstaclesPositions[i]).removeClass('obstacle')
-            }
-        }
+        clearObstacles()
         let freq = parseInt(maxSize * parseFloat($('#frequency :selected').val() / 100))
         while (freq != 0) {
             let rnd = getRndInteger(0, maxSize)
@@ -329,6 +368,12 @@
                 //console.log(obstaclesPositions)
                 freq -= 1
             }
+        }
+    }
+
+    function clearObstacles() {
+        for (let i = 0; i < obstaclesPositions.length; i++) {
+            $('#' + obstaclesPositions[i]).removeClass('obstacle')
         }
     }
 
