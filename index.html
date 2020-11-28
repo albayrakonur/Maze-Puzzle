@@ -243,8 +243,14 @@
 </body>
 
 <script>
+    const rows = 8
+    const cols = 16
     var obstaclesPositions = []
     var maxSize = 0
+    var startX = -1
+    var startY = -1
+    var endX = -1
+    var endY = -1
 
     $(document).ready(() => {
         var $algo = $('#algorithm_panel');
@@ -262,8 +268,6 @@
             top: $algo.offset().top + $algo.outerHeight() + 20
         });
 
-        const rows = 32
-        const cols = 64
         const outer = $('#outer')
         maxSize = rows * cols
         let size = 0;
@@ -276,10 +280,17 @@
             outer.append(row)
         }
 
-        const hunter = $('#' + getRndInteger(0, maxSize))
+        let startIndex = getRndInteger(0, maxSize)
+        let endIndex = getRndInteger(0, maxSize)
+
+        const hunter = $('#' + startIndex)
         hunter.addClass('hunter')
-        const hunt = $('#' + getRndInteger(0, maxSize))
+        const hunt = $('#' + endIndex)
         hunt.addClass('hunt')
+
+        getStartPosition(startIndex)
+        getEndPosition(endIndex)
+
         //console.log(typeof parseInt($('#frequency :selected').val()))
 
         putObstacles()
@@ -293,26 +304,32 @@
         });
 
         $('#startButton').click(function (event) {
-            let nodeArray = []
-            for (let i = 0; i < maxSize; i++) {
-                let tmp = $('#' + i)
-                if (tmp.hasClass('obstacle')) {
-                    nodeArray.push("true")
+            let matrix = []
+            let tmpArr = []
+            for (let i = 1; i <= maxSize; i++) {
+                let tmpNode = $('#' + i)
+                if (tmpNode.hasClass('obstacle')) {
+                    tmpArr.push(1)
                 } else {
-                    nodeArray.push("false")
+                    tmpArr.push(0)
+                }
+                if (i % cols == 0) {
+                    matrix.push(tmpArr)
+                    tmpArr = []
                 }
             }
             let tmp = {
-                "nodes": nodeArray
+                "nodes": matrix,
+                "startX": ""
             };
             let data = JSON.stringify(tmp);
-            console.log(data)
+            console.log(matrix)
             data = JSON.parse(data)
-            console.log(typeof data)
+            console.log(data)
             //for (let pair of data.entries()) {
             //    console.log(reqObj);
             //}
-            $.ajax({
+            /*$.ajax({
                 async: true,
                 crossDomain: true,
                 type: "POST",
@@ -325,7 +342,7 @@
                 }, error: function (xhr, status, err) {
                     alert('error')
                 }
-            });
+            });*/
         });
 
         /*$('#rowcolForm').click(function (event) {
@@ -334,6 +351,23 @@
         });*/
 
     })
+
+    function getStartPosition(start) {
+
+        startX = parseInt(start / cols)
+        startY = parseInt(start % cols)
+
+        console.log("start: " + startX + "," + startY)
+
+    }
+
+    function getEndPosition(end) {
+        endX = parseInt(end / cols)
+        endY = parseInt(end % cols)
+
+        console.log("end: " + endX + "," + endY)
+
+    }
 
     function handleClick(event) {
         //if (event.buttons == 1) {
@@ -349,9 +383,11 @@
             if (target.hasClass('hunt')) {
                 target.removeClass('hunt')
                 $('#' + rnd).addClass('hunt')
+                getEndPosition(rnd)
             } else if (target.hasClass('hunter')) {
                 target.removeClass('hunter')
                 $('#' + rnd).addClass('hunter')
+                getStartPosition(rnd)
             }
         } else {
             target.addClass('obstacle')
