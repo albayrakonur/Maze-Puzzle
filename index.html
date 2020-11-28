@@ -293,27 +293,38 @@
         });
 
         $('#startButton').click(function (event) {
-            let data = new FormData();
+            let nodeArray = []
             for (let i = 0; i < maxSize; i++) {
                 let tmp = $('#' + i)
                 if (tmp.hasClass('obstacle')) {
-                    data.append(i, true)
+                    nodeArray.push("true")
                 } else {
-                    data.append(i, false)
+                    nodeArray.push("false")
                 }
             }
-            var reqObj = {};
-            data.forEach((value, key) => reqObj[key] = value);
-            var json = JSON.stringify(reqObj);
+            let tmp = {
+                "nodes": nodeArray
+            };
+            let data = JSON.stringify(tmp);
+            console.log(data)
+            data = JSON.parse(data)
+            console.log(typeof data)
             //for (let pair of data.entries()) {
             //    console.log(reqObj);
             //}
             $.ajax({
+                async: true,
+                crossDomain: true,
                 type: "POST",
-                url: url,
-                data: reqObj,
-                success: success,
-                dataType: dataType
+                url: 'http://localhost:3000/',
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (data, textStatus, response) {
+                    alert('success')
+                }, error: function (xhr, status, err) {
+                    alert('error')
+                }
             });
         });
 
