@@ -242,8 +242,8 @@
 </body>
 
 <script>
-    const rows = 6
-    const cols = 6
+    const rows = 8
+    const cols = 16
     var obstaclesPositions = []
     var maxSize = 0
     var startX = -1
@@ -306,34 +306,34 @@
         $('#startButton').click(function (event) {
             let matrix = []
             let tmpArr = []
-            for (let i = 1; i <= maxSize; i++) {
+            for (let i = 0; i < maxSize; i++) {
                 let tmpNode = $('#' + i)
                 if (tmpNode.hasClass('obstacle')) {
                     tmpArr.push(1)
                 } else {
                     tmpArr.push(0)
                 }
-                if (i % cols == 0) {
+                if ((i + 1) % cols == 0) {
                     matrix.push(tmpArr)
                     tmpArr = []
                 }
             }
             let tmp = {
                 "nodes": matrix,
-                "startX": ""
-            };
+                "startX": startX,
+                "startY": startY,
+                "endX": endX,
+                "endY": endY
+            }
             let data = JSON.stringify(tmp);
             console.log(matrix)
             data = JSON.parse(data)
             console.log(data)
-            //for (let pair of data.entries()) {
-            //    console.log(reqObj);
-            //}
-            /*$.ajax({
+            $.ajax({
                 async: true,
                 crossDomain: true,
                 type: "POST",
-                url: 'http://localhost:3000/',
+                url: 'http://localhost:3000/nodeData',
                 processData: false,
                 contentType: false,
                 data: data,
@@ -342,7 +342,7 @@
                 }, error: function (xhr, status, err) {
                     alert('error')
                 }
-            });*/
+            });
         });
 
         /*$('#rowcolForm').click(function (event) {
