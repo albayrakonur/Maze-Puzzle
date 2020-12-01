@@ -326,9 +326,9 @@
                 "endY": endY
             }
             let data = JSON.stringify(tmp);
-            console.log(matrix)
-            data = JSON.parse(data)
             console.log(data)
+            //data = JSON.parse(data)
+            //console.log(data)
             $.ajax({
                 async: true,
                 crossDomain: true,
@@ -338,9 +338,19 @@
                 contentType: false,
                 data: data,
                 success: function (data, textStatus, response) {
-                    alert('success')
+                    data.shortestPath.forEach(element => {
+                        let x, y = 0
+                        x = parseInt(element.charAt(0))
+                        y = parseInt(element.charAt(2))
+                        let tmpNode = $('#' + ((x * 16) + y))
+                        if (!(tmpNode.hasClass('hunt') || tmpNode.hasClass('hunter'))) {
+                            tmpNode.addClass('shortestPath')
+                        }
+                    })
                 }, error: function (xhr, status, err) {
-                    alert('error')
+                    console.log(xhr)
+                    console.log(status)
+                    console.log(err)
                 }
             });
         });
