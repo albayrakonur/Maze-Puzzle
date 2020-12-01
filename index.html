@@ -173,6 +173,9 @@
             let tmpArr = []
             for (let i = 0; i < maxSize; i++) {
                 let tmpNode = $('#' + i)
+                if(tmpNode.hasClass('shortestPath')) {
+                    tmpNode.removeClass('shortestPath')
+                }
                 if (tmpNode.hasClass('obstacle')) {
                     tmpArr.push(1)
                 } else {
