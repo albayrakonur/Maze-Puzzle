@@ -189,5 +189,13 @@ footer {
 }
 
 .shortestPath {
-    background: #ff9166;
+    background: #0000FF;
+}
+
+.openNode {
+    background: #00FFFF;
+}
+
+.closedNode {
+    background: #FFA500;
 }
