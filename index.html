@@ -54,22 +54,8 @@
                 </div>
             </div>
 
-
-            <h3 id="bestfirst_header"><a href="#">Djkstra</a></h3>
-            <div id="bestfirst_section" class="finder_section">
-                <!--<header class="option_header">
-                    <h3>Heuristic</h3>
-                </header>
-                <div id="bestfirst_heuristic" class="sub_options">
-                    <input type="radio" name="bestfirst_heuristic" value="manhattan" checked />
-                    <label class="option_label">Manhattan</label> <br>
-                    <input type="radio" name="bestfirst_heuristic" value="euclidean" />
-                    <label class="option_label">Euclidean</label> <br>
-                    <input type="radio" name="bestfirst_heuristic" value="octile" />
-                    <label class="option_label">Octile</label> <br>
-                    <input type="radio" name="bestfirst_heuristic" value="chebyshev" />
-                    <label class="option_label">Chebyshev</label> <br>
-                </div>-->
+            <h3 id="bfs_header"><a href="#">BFS</a></h3>
+            <div id="bfs_section" class="finder_section">
             </div>
 
         </div><!-- .accordion -->
@@ -169,7 +155,6 @@
 
         $('#startButton').click(function (event) {
             var active = jQuery("#accordion").accordion('option', 'active');
-            console.log(active)
             let heuristicFunction = -1
             if (active == 0) { //A Star
                 let selectedHeuristic = $('input[name=astar_heuristic]:checked', '#astar_heuristic').val()
@@ -182,21 +167,20 @@
                 } else if (selectedHeuristic.localeCompare('chebyshev') == 0) {
                     heuristicFunction = 3
                 }
-            } else if (active == 1) { //Dijkstra
-                heuristicFunction = 4
+            } else if (active == 1) { //BFS
+
             }
             let matrix = []
             let tmpArr = []
             for (let i = 0; i < maxSize; i++) {
                 let tmpNode = $('#' + i)
+
                 //remove filled box
-                if (tmpNode.hasClass('shortestPath')) {
+                if (tmpNode.hasClass('shortestPath') || tmpNode.hasClass('openNode') || tmpNode.hasClass('closedNode')) {
                     tmpNode.removeClass('shortestPath')
-                } else if (tmpNode.hasClass('openNode')) {
                     tmpNode.removeClass('openNode')
-                } else if (tmpNode.hasClass('closedNode')) {
                     tmpNode.removeClass('closedNode')
-                } //end removing
+                }//end removing
 
                 if (tmpNode.hasClass('obstacle')) {
                     tmpArr.push(1)
@@ -214,18 +198,19 @@
                 "startY": startY,
                 "endX": endX,
                 "endY": endY,
+                "function": active, //0 -> aStar; 1-> DFS; 2-> Dijkstra
                 "heuristic": heuristicFunction
             }
             let data = JSON.stringify(tmp);
-            console.log(data)
+            //console.log(data)
             //data = JSON.parse(data)
             //console.log(data)
             $.ajax({
                 async: true,
                 crossDomain: true,
                 type: "POST",
-                url: 'https://maze-puzzle.herokuapp.com/nodeData',
-                //url: 'http://localhost:3000/nodeData',
+                //url: 'https://maze-puzzle.herokuapp.com/nodeData',
+                url: 'http://localhost:3000/nodeData',
                 processData: false,
                 contentType: false,
                 data: data,
@@ -290,15 +275,11 @@
         startX = parseInt(start / cols)
         startY = parseInt(start % cols)
 
-        console.log("start: " + startX + "," + startY)
-
     }
 
     function getEndPosition(end) {
         endX = parseInt(end / cols)
         endY = parseInt(end % cols)
-
-        console.log("end: " + endX + "," + endY)
 
     }
 
@@ -339,6 +320,7 @@
             }
         } else {
             target.addClass('obstacle')
+            obstaclesPositions.push(parseInt(target.attr('id')))
         }
         //console.log(target.attr('id'))
         //}
