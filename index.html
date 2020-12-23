@@ -43,9 +43,7 @@
                     <h3>Heuristic</h3>
                 </header>
                 <div id="astar_heuristic" class="sub_options">
-                    <input type="radio" name="astar_heuristic" value="manhattan" checked />
-                    <label class="option_label">Manhattan</label> <br>
-                    <input type="radio" name="astar_heuristic" value="euclidean" />
+                    <input type="radio" name="astar_heuristic" value="euclidean" checked/>
                     <label class="option_label">Euclidean</label> <br>
                     <input type="radio" name="astar_heuristic" value="octile" />
                     <label class="option_label">Octile</label> <br>
@@ -60,9 +58,7 @@
                     <h3>Heuristic</h3>
                 </header>
                 <div id="bfs_heuristic" class="sub_options">
-                    <input type="radio" name="bfs_heuristic" value="manhattan" checked />
-                    <label class="option_label">Manhattan</label> <br>
-                    <input type="radio" name="bfs_heuristic" value="euclidean" />
+                    <input type="radio" name="bfs_heuristic" value="euclidean" checked/>
                     <label class="option_label">Euclidean</label> <br>
                     <input type="radio" name="bfs_heuristic" value="octile" />
                     <label class="option_label">Octile</label> <br>
@@ -175,25 +171,21 @@
             let heuristicFunction = -1
             if (active == 0) { //A Star
                 let selectedHeuristic = $('input[name=astar_heuristic]:checked', '#astar_heuristic').val()
-                if (selectedHeuristic.localeCompare('manhattan') == 0) {
+                if (selectedHeuristic.localeCompare('euclidean') == 0) {
                     heuristicFunction = 0
-                } else if (selectedHeuristic.localeCompare('euclidean') == 0) {
-                    heuristicFunction = 1
                 } else if (selectedHeuristic.localeCompare('octile') == 0) {
-                    heuristicFunction = 2
+                    heuristicFunction = 1
                 } else if (selectedHeuristic.localeCompare('chebyshev') == 0) {
-                    heuristicFunction = 3
+                    heuristicFunction = 2
                 }
             } else if (active == 1) { //Best First
                 let selectedHeuristic = $('input[name=bfs_heuristic]:checked', '#bfs_heuristic').val()
-                if (selectedHeuristic.localeCompare('manhattan') == 0) {
+                if (selectedHeuristic.localeCompare('euclidean') == 0) {
                     heuristicFunction = 0
-                } else if (selectedHeuristic.localeCompare('euclidean') == 0) {
-                    heuristicFunction = 1
                 } else if (selectedHeuristic.localeCompare('octile') == 0) {
-                    heuristicFunction = 2
+                    heuristicFunction = 1
                 } else if (selectedHeuristic.localeCompare('chebyshev') == 0) {
-                    heuristicFunction = 3
+                    heuristicFunction = 2
                 }
             }
             let matrix = []
@@ -235,8 +227,8 @@
                 async: true,
                 crossDomain: true,
                 type: "POST",
-                //url: 'https://maze-puzzle.herokuapp.com/nodeData',
-                url: 'http://localhost:3000/nodeData',
+                url: 'https://maze-puzzle.herokuapp.com/nodeData',
+                //url: 'http://localhost:3000/nodeData',
                 processData: false,
                 contentType: false,
                 data: data,
