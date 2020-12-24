@@ -43,7 +43,7 @@
                     <h3>Heuristic</h3>
                 </header>
                 <div id="astar_heuristic" class="sub_options">
-                    <input type="radio" name="astar_heuristic" value="euclidean" checked/>
+                    <input type="radio" name="astar_heuristic" value="euclidean" checked />
                     <label class="option_label">Euclidean</label> <br>
                     <input type="radio" name="astar_heuristic" value="octile" />
                     <label class="option_label">Octile</label> <br>
@@ -58,7 +58,7 @@
                     <h3>Heuristic</h3>
                 </header>
                 <div id="bfs_heuristic" class="sub_options">
-                    <input type="radio" name="bfs_heuristic" value="euclidean" checked/>
+                    <input type="radio" name="bfs_heuristic" value="euclidean" checked />
                     <label class="option_label">Euclidean</label> <br>
                     <input type="radio" name="bfs_heuristic" value="octile" />
                     <label class="option_label">Octile</label> <br>
@@ -101,6 +101,9 @@
         <button id="startButton" class="control_button">Start Search</button>
         <button id="clearSearchButton" class="control_button">Clear Search</button>
         <button id="clearWallsButton" class="control_button">Clear Walls</button>
+        <div id="resulting_area">
+
+        </div>
     </div>
 
     <div class="wrapper" id="outer"></div>
@@ -159,6 +162,7 @@
         });
 
         $('#clearWallsButton').click(function (event) {
+            document.getElementById('resulting_area').innerHTML = ""
             clearObstacles()
         });
 
@@ -269,6 +273,13 @@
                                 tmpNode.addClass('shortestPath')
                             }
                         })
+                        //<p>Duration: </p>
+                        //<p>Open Nodes: </p>
+                        //<p>Closed Nodes: </p>
+                        document.getElementById('resulting_area').innerHTML = 'Duration: ' + data.duration + '\n'
+                        document.getElementById('resulting_area').innerHTML += 'Open Nodes: ' + data.openNodes.length + '\n'
+                        document.getElementById('resulting_area').innerHTML += 'Closed Nodes: ' + data.openNodes.length + '\n'
+
                     } else {
                         alert("No Solution !")
                     }
@@ -357,6 +368,7 @@
             $('#' + i).removeClass()
             $('#' + i).addClass('column')
         }
+        document.getElementById('resulting_area').innerHTML = ""
         InitHuntandHunter()
     }
 
