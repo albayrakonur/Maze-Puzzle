@@ -277,8 +277,8 @@
                         //<p>Open Nodes: </p>
                         //<p>Closed Nodes: </p>
                         document.getElementById('resulting_area').innerHTML = 'Duration: ' + data.duration + '\n'
-                        document.getElementById('resulting_area').innerHTML += 'Open Nodes: ' + data.openNodes.length + '\n'
-                        document.getElementById('resulting_area').innerHTML += 'Closed Nodes: ' + data.openNodes.length + '\n'
+                        document.getElementById('resulting_area').innerHTML += 'Potential Nodes: ' + data.openNodes.length + '\n'
+                        document.getElementById('resulting_area').innerHTML += 'Visited Nodes: ' + data.closedNodes.length + '\n'
 
                     } else {
                         alert("No Solution !")
